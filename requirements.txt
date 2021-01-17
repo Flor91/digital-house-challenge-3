@@ -1,0 +1,6 @@
+spotipy
+librosa
+audioread
+pydub
+pydot
+python-dotenv
