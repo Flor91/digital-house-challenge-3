@@ -52,10 +52,8 @@ class FreeMusicArchive:
         data = r.json()["dataset"][0]
         r_id = data[dataset + "_id"]
         if r_id != str(fma_id):
-            raise Exception(
-                "The received id {} does not correspond to"
-                "the requested one {}".format(r_id, fma_id)
-            )
+            raise Exception("The received id {} does not correspond to"
+                            "the requested one {}".format(r_id, fma_id))
         if fields is None:
             return data
         if type(fields) is list:
@@ -113,9 +111,9 @@ class FreeMusicArchive:
         return genre_ids, genre_titles
 
     def get_all_genres(self):
-        df = pd.DataFrame(
-            columns=["genre_parent_id", "genre_title", "genre_handle", "genre_color"]
-        )
+        df = pd.DataFrame(columns=[
+            "genre_parent_id", "genre_title", "genre_handle", "genre_color"
+        ])
         df.index.rename("genre_id", inplace=True)
 
         page = 1
@@ -159,7 +157,8 @@ class Genres:
                 genre_id = child[0]
                 node_c = create_node(genre_id)
                 graph.add_edge(pydot.Edge(node_p, node_c))
-                create_tree(genre_id, node_c, depth - 1 if depth is not None else None)
+                create_tree(genre_id, node_c,
+                            depth - 1 if depth is not None else None)
 
         for root in roots:
             node_p = create_node(root)
@@ -177,8 +176,7 @@ class Genres:
                 roots.append(gid)
             elif parent not in self.df.index:
                 msg = "{} ({}) has parent {} which is missing".format(
-                    gid, title, parent
-                )
+                    gid, title, parent)
                 raise RuntimeError(msg)
         return roots
 
@@ -224,13 +222,11 @@ def load(filepath):
         SUBSETS = ["small", "medium", "large"]
         try:
             tracks["set", "subset"] = tracks["set", "subset"].astype(
-                CategoricalDtype(categories=SUBSETS, ordered=True)
-            )
+                CategoricalDtype(categories=SUBSETS, ordered=True))
         except ValueError:
             # the categories and ordered arguments were removed in pandas 0.25
             tracks["set", "subset"] = tracks["set", "subset"].astype(
-                pd.CategoricalDtype(categories=SUBSETS, ordered=True)
-            )
+                pd.CategoricalDtype(categories=SUBSETS, ordered=True))
 
         COLUMNS = [
             ("track", "genre_top"),
@@ -270,10 +266,10 @@ class Loader:
 class RawAudioLoader(Loader):
     def __init__(self, sampling_rate=SAMPLING_RATE):
         self.sampling_rate = sampling_rate
-        self.shape = (NB_AUDIO_SAMPLES * sampling_rate // SAMPLING_RATE,)
+        self.shape = (NB_AUDIO_SAMPLES * sampling_rate // SAMPLING_RATE, )
 
     def load(self, filepath):
-        return self._load(filepath)[: self.shape[0]]
+        return self._load(filepath)[:self.shape[0]]
 
 
 class LibrosaLoader(RawAudioLoader):
@@ -326,9 +322,11 @@ class FfmpegLoader(RawAudioLoader):
             command.extend(["-ar", str(self.sampling_rate)])
         command.append("-")
         # 30s at 44.1 kHz ~= 1.3e6
-        proc = sp.run(
-            command, stdout=sp.PIPE, bufsize=10 ** 7, stderr=sp.DEVNULL, check=True
-        )
+        proc = sp.run(command,
+                      stdout=sp.PIPE,
+                      bufsize=10**7,
+                      stderr=sp.DEVNULL,
+                      check=True)
 
         return np.fromstring(proc.stdout, dtype="int16")
 
@@ -369,7 +367,8 @@ def build_sample_loader(audio_dir, Y, loader):
 
                 # print(self.tids, self.batch_foremost.value, batch_current, self.tids[batch_current], batch_size)
                 # print('queue', self.tids[batch_current], batch_size)
-                tids = np.array(self.tids[batch_current : batch_current + batch_size])
+                tids = np.array(self.tids[batch_current:batch_current +
+                                          batch_size])
 
             batch_size = 0
             for tid in tids:
@@ -379,12 +378,12 @@ def build_sample_loader(audio_dir, Y, loader):
                     self.Y[batch_size] = Y.loc[tid]
                     batch_size += 1
                 except Exception as e:
-                    print("\nIgnoring " + audio_path + " (error: " + str(e) + ").")
+                    print("\nIgnoring " + audio_path + " (error: " + str(e) +
+                          ").")
 
             with self.lock2:
-                while (
-                    batch_current - self.batch_rearmost.value
-                ) % self.tids.size > self.batch_size:
+                while (batch_current - self.batch_rearmost.value
+                       ) % self.tids.size > self.batch_size:
                     # print('wait', indices[0], batch_current, self.batch_rearmost.value)
                     self.condition.wait()
                 self.condition.notify_all()
