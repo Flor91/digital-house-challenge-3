@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% set active_page = "search_song" %}
+
+{% block page_content %}
+<h1 class="cap">Search song</h1>
+
+<h3>Search song by name</h3>
+<form method="post">
+    <input type="text" name="name" value="" required />
+    <input type="submit">
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}

@@ -12,7 +12,7 @@ docker build -t genre-recognition . && docker run -d -p 8080:80 genre-recognitio
 ### Development
 Start app with:
 
-```unicorn main:app --reload```
+```uvicorn main:app --reload```
 
 (Ctrl+C to quit)
 

@@ -1,6 +1,10 @@
 fastapi[all]
+aiofiles
+uvicorn
+python-multipart
 spotipy
 librosa
 audioread
 pydot
 python-dotenv
+markdown

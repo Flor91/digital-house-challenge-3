@@ -1,12 +1,15 @@
-{% extends "layout.html" %}
-{% block body %}
+{% extends "index.html" %}
+{% block page_content %}
 
-<h2>Listening to {{ song }}</h2>
-
-  <div class="audio-embed">
-    <audio controls>
-      <source src="{{ url_for('static', path=filepath) }}" type="audio/mpeg"/>
-    </audio>
+  <div class="top-pad">
+    <h1>{{ song['name'] }} by {{ song['artist'] }}
+      <small>{{ song['genre'] }}</small>
+    </h1>
+    <div class="audio-embed">
+      <audio controls>
+        <source src="{{ url_for('static', path=filepath) }}" type="audio/mpeg"/>
+      </audio>
+    </div>
   </div>
 
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% set active_page = "home" %}
+
+{% block page_content %}
+{% include 'include/sidebar.html' %}
+
+<main role="main" class="container">
+    <div class="row">
+        {{data.text|safe}}
+    </div>
+</main><!-- /.container -->
+
+<div class="top-pad">
+  {% for song in songs %}
+      <div class="well">
+        <h2>
+          <a href="{{ url_for('play_song', song_name=song['name']) }}">{{ song['name'] }} by {{ song['artist']}}</a>
+          <small> {{ song['genre'] }}</small>
+        </h2>
+      </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% set active_page = "new_song" %}
+
+{% block page_content %}
+<h1 class="cap">New song</h1>
+
+<h3>Load new Spotify song by ID, URI</h3>
+<form action="/new_song_m1" method="post">
+    <label for="spotify_id">Spotify ID:</label><br>
+    <input type="text" name="spotify_id" value="" required /><br>
+
+    <label for="genre">Genre:</label><br>
+    <input type="text" name="genre" value="" /><br>
+    <input type="submit"><br><br>
+</form>
+
+<h3>Load new audio file from WWW</h3>
+<form action="/new_song_m2" method="post">
+    <label for="name">Name:</label><br>
+    <input type="text" name="name" value="" required /><br>
+
+    <label for="url">URL:</label><br>
+    <input type="text" name="url" value="" required /><br>
+
+    <label for="genre">Genre:</label><br>
+    <input type="text" name="genre" value="" /><br>
+    <input type="submit"><br><br>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}
