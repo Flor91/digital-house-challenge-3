@@ -25,9 +25,10 @@ class SpotifySong(Song):
     id = Column(Integer, ForeignKey('songs.id'), primary_key=True, index=True)
     spotify_id = Column(String, unique=True, index=True)
     artist = Column(String, unique=False, index=True)
-    analysis_url = Column(String, unique=True, index=True)
-    duration_ms = Column(Integer, unique=False, index=True)
-    track_href = Column(String, unique=True, index=True)
+    analysis_url = Column(String, unique=False, index=False)
+    duration_ms = Column(Integer, unique=False, index=False)
+    track_href = Column(String, unique=False, index=True)
+    album_img = Column(String, unique=False, index=False)
     spotify_features = relationship("SpotifyAudioFeatures", back_populates="spotify_song", uselist=False)
 
     __mapper_args__ = {

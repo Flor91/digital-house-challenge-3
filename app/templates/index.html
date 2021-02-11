@@ -10,16 +10,33 @@
     </div>
 </main><!-- /.container -->
 
-<div class="top-pad">
+<ul class="list-unstyled">
   {% for song in songs %}
-      <div class="well">
-        <h2>
-          <a href="{{ url_for('play_song', song_name=song['name']) }}">{{ song['name'] }} by {{ song['artist']}}</a>
-          <small> {{ song['genre'] }}</small>
-        </h2>
+    <div class="media">
+        <img class="rounded-circle mr-3" src="{{ song['album_img'] }}" width="65" alt="Generic placeholder image">
+      <div class="media-body">
+          <h5 class="mt-0"><a href="{{ url_for('play_song', song_name=song['name']) }}">
+              {{ song['name'] }} by {{ song['artist']}}</a>
+              <span class="badge badge-info">{{ song['genre'] }}</span></h5>
       </div>
+    </div>
     {% endfor %}
-</div>
+</ul>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
 
 {% endblock %}
 

@@ -37,7 +37,7 @@ def create_song(db: Session, song: schemas.SongCreate):
 
 
 def create_spotify_song(db: Session, song: schemas.SpotifySongCreate):
-    name, artist, url, audio_features = get_song_details(song.spotify_id)
+    name, artist, url, audio_features, album_img = get_song_details(song.spotify_id)
 
     if url:
         try:
@@ -52,7 +52,7 @@ def create_spotify_song(db: Session, song: schemas.SpotifySongCreate):
             librosa_features = compute_features(filename)
 
             db_song = models.SpotifySong(spotify_id=song.spotify_id, genre=song.genre, name=name, artist=artist, url=url,
-                                         filename=filename, duration_ms=audio_features['duration_ms'],
+                                         filename=filename, duration_ms=audio_features['duration_ms'], album_img=album_img,
                                          track_href=audio_features['track_href'], librosa_features=librosa_features)
 
             db_spotify_features = models.SpotifyAudioFeatures(song_id=db_song.id, spotify_song=db_song, acousticness=audio_features['acousticness'],

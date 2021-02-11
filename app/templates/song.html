@@ -1,15 +1,53 @@
 {% extends "index.html" %}
 {% block page_content %}
 
-  <div class="top-pad">
-    <h1>{{ song['name'] }} by {{ song['artist'] }}
-      <small>{{ song['genre'] }}</small>
-    </h1>
-    <div class="audio-embed">
-      <audio controls>
-        <source src="{{ url_for('static', path=filepath) }}" type="audio/mpeg"/>
-      </audio>
+  <div class="container jumbotron">
+    <h1 class="display-4">{{ song['name'] }} </h1>
+    <h2>by {{ song['artist'] }}</h2>
+    <p class="lead">{{ song['genre'] }}</p>
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="audio-embed col-sm">
+        <h4>Audio sample</h4>
+        <audio controls>
+          <source src="{{ url_for('static', path=filepath) }}" type="audio/mpeg"/>
+        </audio><br><br>
+
+        <h4>Details</h4>
+        <ul class="list-group">
+          <li class="list-group-item">Duration: {{ song.duration_ms}} ms</li>
+          <li class="list-group-item">acousticness: {{ song.spotify_features.acousticness}}</li>
+          <li class="list-group-item">danceability: {{ song.spotify_features.danceability}}</li>
+          <li class="list-group-item">energy: {{ song.spotify_features.energy}}</li>
+          <li class="list-group-item">instrumentalness: {{ song.spotify_features.instrumentalness}}</li>
+          <li class="list-group-item">liveness: {{ song.spotify_features.liveness}}</li>
+          <li class="list-group-item">loudness: {{ song.spotify_features.loudness}}</li>
+          <li class="list-group-item">speechiness: {{ song.spotify_features.speechiness}}</li>
+          <li class="list-group-item">tempo: {{ song.spotify_features.tempo}}</li>
+          <li class="list-group-item">valence: {{ song.spotify_features.valence}}</li>
+          <li class="list-group-item btn btn-primary" type="button" data-toggle="collapse" href="#collapseExample" role="button"
+              aria-expanded="false" aria-controls="collapseExample">Librosa features</li>
+        </ul>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            {{song.librosa_features}}
+          </div>
+        </div>
+
+      </div>
+
+      <div  class="col-sm">
+      <iframe src="{{ 'https://open.spotify.com/embed/track/%s'%song['spotify_id'].split(':')[2] }}" width="300" height="380"
+              frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     </div>
+
+    </div>
+    <hr class="my-4">
+
+  <!--    <img src="{{ url_for('static', path=imgpath) }}">-->
+
   </div>
 
 {% endblock %}

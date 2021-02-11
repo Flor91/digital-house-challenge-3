@@ -38,8 +38,11 @@ def get_song_details(spotify_id):
     name = track_info['name'].replace('/', '-')
     url = track_info['preview_url']
 
+    album_id = track_info['album']['id']
+    album_img = spotipy_connector.album(album_id)['images'][0]['url']
+
     audio_features = spotipy_connector.audio_features(spotify_id)[0]
-    return name, artist, url, audio_features
+    return name, artist, url, audio_features, album_img
 
 
 def get_songs_in_playlist(playlist_id):

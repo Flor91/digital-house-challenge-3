@@ -8,6 +8,7 @@ from fastapi.responses import PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from fastapi.encoders import jsonable_encoder
 
 from library import crud, models, schemas, helpers
 from library.database import SessionLocal, engine
@@ -88,14 +89,16 @@ def search_song_form(request: Request, name: str = Form(...), db: Session = Depe
 
 @app.get("/song/{song_name}/play", response_class=HTMLResponse)
 def play_song(request: Request, song_name: str, db: Session = Depends(get_db)):
-    db_song = crud.get_song_by_name(db, name=song_name)
+    db_song = read_song(song_name=song_name, db=db)
     if db_song is None:
         raise HTTPException(status_code=404, detail="Song not found")
 
     filepath = '/songs/' + db_song.filename
+    imgpath = '/img/melspectrograms/' + db_song.filename.split('.')[0] + '.png'
 
     return templates.TemplateResponse("song.html", {"request": request,
                                                     "song": db_song,
+                                                    "imgpath": imgpath,
                                                     "filepath":  filepath})
 
 @app.get("/page/{page_name}", response_class=HTMLResponse)

@@ -6,10 +6,14 @@ import requests
 from urllib.parse import urlparse
 from fastapi import HTTPException
 import librosa
+import librosa.display
+
+import matplotlib.pyplot as plt
 
 import pandas as pd
 import numpy as np
 from scipy import stats
+import skimage.io
 
 import warnings
 
@@ -80,6 +84,26 @@ def columns():
     return columns.sort_values()
 
 
+def scale_minmax(X, min=0.0, max=1.0):
+    X_std = (X - X.min()) / (X.max() - X.min())
+    X_scaled = X_std * (max - min) + min
+    return X_scaled
+
+
+def spectogram_image(y, sr, filename):
+    mels = librosa.feature.melspectrogram(y=y, sr=sr)
+    mels = np.log(mels + 1e-9)  # add small number to avoid log(0)
+
+    # min-max scale to fit inside 8-bit range
+    img = scale_minmax(mels, 0, 255).astype(np.uint8)
+    img = np.flip(img, axis=0)  # put low frequencies at the bottom in image
+    img = 255 - img  # invert. make black==more energy
+
+    # save as PNG
+    img_out = 'static/img/melspectrograms/' + filename.split('.')[0] + '.png'
+    skimage.io.imsave(img_out, img)
+
+
 def compute_features(filename):
 
     features = pd.Series(index=columns(), dtype=np.float32)
@@ -99,6 +123,8 @@ def compute_features(filename):
     try:
         filepath = DOWNLOAD_FILES_FOLDER + filename
         x, sr = librosa.load(filepath, sr=None, mono=True, duration=10)  # kaiser_fast
+
+        #spectogram_image(x, sr, filename)
 
         f = librosa.feature.zero_crossing_rate(x, frame_length=2048, hop_length=512)
         feature_stats('zcr', f)

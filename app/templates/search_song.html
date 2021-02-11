@@ -6,8 +6,11 @@
 
 <h3>Search song by name</h3>
 <form method="post">
-    <input type="text" name="name" value="" required />
-    <input type="submit">
+    <div class="form-group">
+        <label for="name">Song name</label><br>
+        <input type="text" name="name" id="name" value="" required /><br><br>
+        <input type="submit" class="btn btn-primary">
+    </div>
 </form>
 
 {% endblock %}
