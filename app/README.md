@@ -1,5 +1,7 @@
 # Music Genre recognition
 
+![img_app.png](static/music_genre_app.png)
+
 ## About
 
 FastAPI app that recognizes music genres based on an Spotify URI.
@@ -8,8 +10,7 @@ FastAPI app that recognizes music genres based on an Spotify URI.
 
 ![img_1.png](static/music_rec_app2.png)
 
-
-Technologies used:
+Technologies used for the App:
 - [FastAPI](https://fastapi.tiangolo.com/): modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.
 - [OpenAPI](https://github.com/OAI/OpenAPI-Specification): (ex. Swagger) The OpenAPI Specification (OAS) defines a standard, programming language-agnostic interface description for HTTP APIs, which allows both humans and computers to discover and understand the capabilities of a service without requiring access to source code, additional documentation, or inspection of network traffic. 
 - [Starlette](https://www.starlette.io/): Starlette is a lightweight ASGI framework/toolkit, which is ideal for building high performance asyncio services.
@@ -22,6 +23,9 @@ For data processing:
 - [Librosa](https://librosa.org/): Audio and music processing with Python
 - [Spotipy](https://spotipy.readthedocs.io/en/2.16.1/): lightweight Python library for the [Spotify Web API](https://developer.spotify.com/documentation/web-api/). 
 - [pydub](https://github.com/jiaaro/pydub):  Manipulate audio with a simple and easy high level interface
+
+For ML models:
+- [Joblib](https://joblib.readthedocs.io/en/latest/): Joblib is part of the SciPy ecosystem and provides utilities for pipelining Python jobs.
 
 ## Run
 Install dependencies with:
